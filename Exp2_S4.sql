@@ -1,0 +1,21 @@
+SELECT 
+     PERSONAL_DE_VENTAS.NOMBRE || ' ' || PERSONAL_DE_VENTAS.APELLIDO AS NOMBRE_COMPLETO,
+     COUNT(Ventas.sale_id) AS TOTAL_VENTAS_EJECUTIVO,
+     SUM(Ventas.total_venta) AS INGRESO_TOTAL
+ FROM PERSONAL_DE_VENTAS
+ JOIN Ventas ON Personal_de_Ventas.Staff_id = Ventas.Staff_id
+ WHERE EXTRACT(YEAR FROM Ventas.fecha_venta) = 2023
+ group by personal_de_ventas.nombre, personal_de_ventas.apellido
+ order by Ingreso_Total desc;
+ 
+
+SELECT 
+     CLIENTES.NOMBRE || ' ' || CLIENTES.APELLIDO AS NOMBRE_COMPLETO,
+     COUNT(Ventas.sale_id) AS TOTAL_VENTAS,
+     MIN(Ventas.fecha_venta) AS PRIMERA_VENTA,
+     MAX(Ventas.fecha_venta) AS ULTIMA_VENTA
+FROM CLIENTES
+JOIN VENTAS ON CLIENTES.CUSTOMER_ID = VENTAS.CUSTOMER_ID
+GROUP BY CLIENTES.NOMBRE, CLIENTES.APELLIDO
+HAVING COUNT(VENTAS.SALE_ID) >= 1 
+ORDER BY TOTAL_VENTAS DESC;
